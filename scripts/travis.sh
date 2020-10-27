@@ -3,7 +3,7 @@
 set -ex
 
 rustup component add clippy
-rustup component add fmt
+rustup component add rustfmt
 
 RUSTFLAGS="--deny=warnings" \
     cargo check --all-targets --all-features
