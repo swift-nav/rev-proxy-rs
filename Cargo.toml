@@ -1,0 +1,21 @@
+[package]
+name = "rev-proxy"
+version = "1.0.0"
+authors = ["Swift Navigation <dev@swiftnav.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+warp = "0.2"
+warp-reverse-proxy = { git = "https://github.com/silverjam/warp-reverse-proxy.git" }
+envy = "0.4"
+serde = { version = "1.0", features = ["derive"] }
+tokio = { version = "0.2", features = ["sync", "macros"] }
+log = "0.4"
+env_logger = "0.8"
+reqwest = "0.10"
+clap = "2"
+
+[build-dependencies]
+vergen = "3"
