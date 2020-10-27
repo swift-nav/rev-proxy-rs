@@ -5,6 +5,8 @@ set -ex
 RUSTFLAGS="--deny=warnings" \
     cargo check --all-targets --all-features
 
+rustup component add clippy
+
 cargo clippy --all-targets -- --deny=warnings
 cargo fmt -- --check
 
