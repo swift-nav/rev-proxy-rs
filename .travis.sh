@@ -14,9 +14,12 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
   docker build --tag musl-builder .
   docker run -it --name musl-builder-run musl-builder
+
   mkdir -p target/x86_64-unknown-linux-musl/release
-  docker cp musl-builder-run:/home/rust/src/target/x86_64-unknown-linux-musl/release/ntripping \
-    target/x86_64-unknown-linux-musl/release/ntripping
+
+  docker cp musl-builder-run:/home/rust/src/target/x86_64-unknown-linux-musl/release/rev-proxy \
+    target/x86_64-unknown-linux-musl/release/rev-proxy
+
   docker rm musl-builder-run
   docker rmi musl-builder
 
