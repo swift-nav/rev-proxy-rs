@@ -1,4 +1,6 @@
-#!/usr/bin/env -S bash -ex
+#!/usr/bin/env bash
+
+set -ex
 
 RUSTFLAGS="--deny=warnings" \
     cargo check --all-targets --all-features
