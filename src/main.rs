@@ -9,7 +9,7 @@ use clap::App;
 use indoc::indoc;
 use serde::Deserialize;
 use tokio::sync::oneshot;
-use warp::{hyper::body::Bytes, Rejection, Reply, Filter};
+use warp::{hyper::body::Bytes, Filter, Rejection, Reply};
 use warp_reverse_proxy::reverse_proxy_filter;
 
 #[derive(Deserialize, Debug, Clone)]
@@ -33,7 +33,7 @@ type SenderT = oneshot::Sender<bool>;
 type MaybeSenderT = Option<SenderT>;
 type ArcSenderT = Arc<Mutex<Cell<MaybeSenderT>>>;
 
-fn unwrap_shutdown_tx<'a>(tx: ArcSenderT) -> MaybeSenderT {
+fn unwrap_shutdown_tx(tx: ArcSenderT) -> MaybeSenderT {
     tx.lock().ok()?.take()
 }
 
@@ -55,7 +55,6 @@ async fn log_response(response: warp::http::Response<Bytes>) -> StdResult<impl R
 
 #[tokio::main]
 async fn main() -> Result<()> {
-
     let version = format!("{} ({})", env!("VERGEN_SEMVER"), env!("VERGEN_SHA_SHORT"));
 
     let matches = App::new("rev-proxy")

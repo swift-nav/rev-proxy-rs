@@ -1,6 +1,6 @@
 extern crate vergen;
 
-use vergen::{ConstantsFlags, generate_cargo_keys};
+use vergen::{generate_cargo_keys, ConstantsFlags};
 
 fn main() {
     let mut flags = ConstantsFlags::all();
