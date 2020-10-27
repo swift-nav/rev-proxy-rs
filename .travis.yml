@@ -15,31 +15,7 @@ cache:
   cargo: true
 
 script:
-  - ./scripts/travis.sh && \
-    if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
-      cd target/release;
-      7z a -tzip ../../revproxy_windows.zip rev-proxy.exe;
-      cd ../..;
-      VERSION="$(git describe --always --tags)";
-      mv revproxy_windows.zip "revproxy-${VERSION}-windows-x86_64.zip";
-      ls -l;
-    fi
-
-  - ./scripts/travis.sh && \
-    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      tar -C "target/release" -czf revproxy_macos.tar.gz rev-proxy;
-      VERSION="$(git describe --always --tags)";
-      mv revproxy_macos.tar.gz "revproxy-${VERSION}-macos-x86_64.tar.gz";
-      ls -l;
-    fi
-
-  - ./scripts/travis.sh && \
-    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      tar -C "target/x86_64-unknown-linux-musl/release" -czf revproxy_linux.tar.gz rev-proxy;
-      VERSION="$(git describe --always --tags)";
-      mv revproxy_linux.tar.gz "revproxy-${VERSION}-linux-x86_64.tar.gz";
-      ls -l;
-    fi
+  - ./scripts/travis.sh 
 
 _github_api_key: &_github_api_key
   api_key:
