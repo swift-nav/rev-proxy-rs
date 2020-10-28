@@ -105,7 +105,7 @@ async fn main() -> Result<()> {
         .ok()
         .expect("failed to set termination signaler");
 
-	setup_termination_handler();
+    setup_termination_handler();
 
     let upstream_url = config.rev_proxy_upstream_url;
     let base_path = config.rev_proxy_base_path;
