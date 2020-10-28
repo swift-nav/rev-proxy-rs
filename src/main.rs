@@ -1,12 +1,12 @@
 use std::boxed::Box;
 use std::cell::Cell;
-use std::convert::Infallible;
 use std::error::Error;
 use std::net::SocketAddr;
-use std::sync::{Arc, Mutex};
+use std::sync::Mutex;
 
 use clap::App;
 use indoc::indoc;
+use once_cell::sync::OnceCell;
 use serde::Deserialize;
 use tokio::sync::oneshot;
 use warp::{hyper::body::Bytes, Filter, Rejection, Reply};
@@ -21,31 +21,38 @@ struct Config {
     rev_proxy_shutdown_url: String,
 }
 
-#[derive(Deserialize)]
-struct Params {
-    key: String,
-}
-
 type Result<T> = std::result::Result<T, Box<dyn Error>>;
 type StdResult<T, E> = std::result::Result<T, E>;
 
 type SenderT = oneshot::Sender<bool>;
 type MaybeSenderT = Option<SenderT>;
-type ArcSenderT = Arc<Mutex<Cell<MaybeSenderT>>>;
+type SharedSenderT = Mutex<Cell<MaybeSenderT>>;
 
-fn unwrap_shutdown_tx(tx: ArcSenderT) -> MaybeSenderT {
-    tx.lock().ok()?.take()
-}
+static SHUTDOWN_TX: OnceCell<SharedSenderT> = OnceCell::new();
 
-fn with_shutdown_tx(
-    tx_input: SenderT,
-) -> impl Filter<Extract = (ArcSenderT,), Error = Infallible> + Clone {
-    let tx = Arc::new(Mutex::new(Cell::new(Some(tx_input))));
-    warp::any().map(move || tx.clone())
-}
-
-fn with_config(config: Config) -> impl Filter<Extract = (Config,), Error = Infallible> + Clone {
-    warp::any().map(move || config.clone())
+fn setup_termination_handler() {
+    ctrlc::set_handler(move || {
+        let _: StdResult<_, _> = (|| {
+            SHUTDOWN_TX
+                .get()
+                .ok_or_else(|| {
+                    log::error!("shutdown signaler not initialized");
+                })?
+                .lock()
+                .map_err(|_| {
+                    log::error!("failed to lock shutdown signaler");
+                })?
+                .take()
+                .ok_or_else(|| {
+                    log::error!("termination handler already triggered");
+                })
+                .map(|tx| tx.send(true))
+                .map_err(|_| {
+                    log::error!("error triggering termination handler");
+                })
+        })();
+    })
+    .expect("error setting SIGINT/SIGTERM handler");
 }
 
 async fn log_response(response: warp::http::Response<Bytes>) -> StdResult<impl Reply, Rejection> {
@@ -74,7 +81,8 @@ async fn main() -> Result<()> {
             REV_PROXY_UPSTREAM_URL   - the URL of the upstream server,
                                        e.g. `http://127.0.0.1:8080/`
 
-            REV_PROXY_SHUTDOWN_KEY   - a key that must be matched to trigger
+            REV_PROXY_SHUTDOWN_KEY   - a key that must be presented to the
+                                       upstream server to initiate
                                        a shutdown, e.g. `2a2a3a6dafe30...`
 
             REV_PROXY_SHUTDOWN_URL   - the URL to invoke when a shutdown is
@@ -92,37 +100,20 @@ async fn main() -> Result<()> {
 
     let (tx, rx) = oneshot::channel();
 
-    let shutdown_route = warp::path!("shutdown")
-        .and(warp::query::<Params>())
-        .and(with_shutdown_tx(tx))
-        .and(with_config(config.clone()))
-        .and_then(
-            |params: Params, tx: ArcSenderT, config: Config| async move {
-                if params.key != config.rev_proxy_shutdown_key {
-                    Err(warp::reject::not_found())
-                } else {
-                    unwrap_shutdown_tx(tx)
-                        .ok_or("failed to unwrap shutdown signaler")
-                        .map(|tx: SenderT| {
-                            log::info!("sending shutdown signal");
-                            tx.send(true)
-                        })
-                        .and(Ok("success"))
-                        .or_else(|e| {
-                            log::error!("sending shutdown signal failed: {:?}", e);
-                            Ok("failure")
-                        })
-                }
-            },
-        );
+    SHUTDOWN_TX
+        .set(Mutex::new(Cell::new(Some(tx))))
+        .ok()
+        .expect("failed to set termination signaler");
+
+	setup_termination_handler();
 
     let upstream_url = config.rev_proxy_upstream_url;
     let base_path = config.rev_proxy_base_path;
 
     let log = warp::log("rev_proxy");
 
-    let app = shutdown_route
-        .or(warp::any().and(reverse_proxy_filter(base_path, upstream_url).and_then(log_response)))
+    let app = reverse_proxy_filter(base_path, upstream_url)
+        .and_then(log_response)
         .with(log);
 
     let listen_addr: SocketAddr = config.rev_proxy_listen_address.parse()?;
