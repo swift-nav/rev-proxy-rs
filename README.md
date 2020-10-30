@@ -1,7 +1,11 @@
 # rev-proxy
 
+[![Build Status](https://travis-ci.com/swift-nav/rev-proxy-rs.svg?token=Usmy93JBkW76XB4WJAjb&branch=main)](https://travis-ci.com/swift-nav/rev-proxy-rs)
+
+## Usage
+
 ```
-rev-proxy 1.0.0 (3dc2113)
+rev-proxy 1.1.0 (83e860c)
 Swift Navigation <dev@swift-nav.com>
 Reverse proxy middleware to handle clean shutdowns
 
@@ -24,7 +28,8 @@ REV_PROXY_BASE_PATH      - the base path to be included in
 REV_PROXY_UPSTREAM_URL   - the URL of the upstream server,
                            e.g. `http://127.0.0.1:8080/`
 
-REV_PROXY_SHUTDOWN_KEY   - a key that must be matched to trigger
+REV_PROXY_SHUTDOWN_KEY   - a key that must be presented to the
+                           upstream server to initiate
                            a shutdown, e.g. `2a2a3a6dafe30...`
 
 REV_PROXY_SHUTDOWN_URL   - the URL to invoke when a shutdown is
@@ -32,4 +37,18 @@ REV_PROXY_SHUTDOWN_URL   - the URL to invoke when a shutdown is
                            `REV_PROXY_SHUTDOWN_KEY` is appended
                            to this URL, e.g.
                            `http://127.0.0.1:8080/shutdown?key=`
+```
+
+## Copyright
+
+```
+Copyright (C) 2020 Swift Navigation Inc.
+Contact: Swift Navigation <dev@swiftnav.com>
+
+This source is subject to the license found in the file 'LICENSE' which must be
+be distributed together with this source. All other rights reserved.
+
+THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 ```
