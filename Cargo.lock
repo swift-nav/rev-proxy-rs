@@ -1716,7 +1716,7 @@ dependencies = [
 [[package]]
 name = "warp-reverse-proxy"
 version = "0.1.0"
-source = "git+https://github.com/silverjam/warp-reverse-proxy.git#c8d9fa816f33e5520ef8a74099331b4b18ebb24d"
+source = "git+https://github.com/silverjam/warp-reverse-proxy.git#5620f4b448b2dd937483eeefeb8fada86a32c6e5"
 dependencies = [
  "hyper",
  "lazy_static",
