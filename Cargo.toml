@@ -6,7 +6,7 @@ edition = "2018"
 
 [dependencies]
 warp = "0.2"
-warp-reverse-proxy = { git = "https://github.com/silverjam/warp-reverse-proxy.git" }
+warp-reverse-proxy = "0.2"
 envy = "0.4"
 serde = { version = "1.0", features = ["derive"] }
 tokio = { version = "0.2", features = ["sync", "macros"] }

@@ -1704,8 +1704,9 @@ dependencies = [
 
 [[package]]
 name = "warp-reverse-proxy"
-version = "0.1.0"
-source = "git+https://github.com/silverjam/warp-reverse-proxy.git#0e5adab7635f77acbb4724d354eab9ae205dea1e"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b4ef86ce4aff5d48bcec007915c719313e8657fa863fada1be40d90971ff2979"
 dependencies = [
  "hyper",
  "lazy_static",
