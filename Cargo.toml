@@ -9,7 +9,7 @@ warp = "0.2"
 warp-reverse-proxy = "0.2"
 envy = "0.4"
 serde = { version = "1.0", features = ["derive"] }
-tokio = { version = "0.2", features = ["sync", "macros"] }
+tokio = { version = "1.1", features = ["sync", "macros"] }
 log = "0.4"
 env_logger = "0.8"
 reqwest = "0.10"
