@@ -62,7 +62,7 @@ async fn log_response(response: warp::http::Response<Bytes>) -> StdResult<impl R
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let version = format!("{} ({})", env!("VERGEN_SEMVER"), env!("VERGEN_SHA_SHORT"));
+    let version = format!("{} ({})", env!("VERGEN_SEMVER_LIGHTWEIGHT"), env!("VERGEN_SHA_SHORT"));
 
     let matches = App::new("rev-proxy")
         .version(&*version)

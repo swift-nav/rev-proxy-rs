@@ -28,7 +28,7 @@ jobs:
         name: Lint
         with:
           command: clippy
-          args: --all-features --all-targets
+          args: --all-features --all-targets -- -D warnings
   test:
     name: Tests
     runs-on: ubuntu-18.04
