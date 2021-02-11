@@ -23,27 +23,14 @@ jobs:
       run: sudo apt-get install musl-tools
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Install rust
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
-        profile: minimal
-        override: true
-    - uses: actions-rs/cargo@v1
-      name: Install cargo-make
-      with:
-        command: install
-        args: --debug cargo-make
     - name: Install rust for target ${{ matrix.binary_target }}
       uses: actions-rs/toolchain@v1
       with:
         toolchain: stable-${{ matrix.binary_target }}
         profile: minimal
+    - uses: davidB/rust-cargo-make@v1
     - name: Build Binary
-      uses: actions-rs/cargo@v1
-      with:
-        command: run
-        args: --bin cargo-make -- make zip-release-ci-flow --env CARGO_MAKE_RELEASE_FLOW_TARGET=${{ matrix.binary_target }}
+      args: cargo make zip-release-ci-flow --env CARGO_MAKE_RELEASE_FLOW_TARGET=${{ matrix.binary_target }}
     - name: Upload Binaries
       uses: svenstaro/upload-release-action@v1-release
       with:

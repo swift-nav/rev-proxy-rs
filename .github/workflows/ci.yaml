@@ -62,13 +62,6 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-      - uses: actions-rs/cargo@v1
-        name: Install cargo-make
-        with:
-          command: install
-          args: --debug cargo-make
-      - uses: actions-rs/cargo@v1
-        name: Run CI
-        with:
-          command: run
-          args: --bin cargo-make target/ci -- make ci-flow
+      - uses: davidB/rust-cargo-make@v1
+      - name: Run CI
+        run: cargo make ci-flow
