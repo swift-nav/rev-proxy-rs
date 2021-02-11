@@ -1,6 +1,6 @@
 # rev-proxy
 
-[![Build Status](https://travis-ci.com/swift-nav/rev-proxy-rs.svg?token=Usmy93JBkW76XB4WJAjb&branch=main)](https://travis-ci.com/swift-nav/rev-proxy-rs)
+![CI](https://github.com/swift-nav/rev-proxy-rs/workflows/CI/badge.svg)
 
 ## Usage
 
