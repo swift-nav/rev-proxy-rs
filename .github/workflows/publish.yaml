@@ -30,7 +30,7 @@ jobs:
         profile: minimal
     - uses: davidB/rust-cargo-make@v1
     - name: Build Binary
-      args: cargo make zip-release-ci-flow --env CARGO_MAKE_RELEASE_FLOW_TARGET=${{ matrix.binary_target }}
+      run: cargo make zip-release-ci-flow --env CARGO_MAKE_RELEASE_FLOW_TARGET=${{ matrix.binary_target }}
     - name: Upload Binaries
       uses: svenstaro/upload-release-action@v1-release
       with:
