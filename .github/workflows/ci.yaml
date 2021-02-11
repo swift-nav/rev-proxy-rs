@@ -1,11 +1,9 @@
 name: CI
-
 on:
   push:
     branches:
       - 'master'
   pull_request:
-
 jobs:
   lint:
     name: Format and lint

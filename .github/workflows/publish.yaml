@@ -29,6 +29,10 @@ jobs:
         toolchain: stable-${{ matrix.binary_target }}
         profile: minimal
     - uses: davidB/rust-cargo-make@v1
+    - name: Pull tags
+      run: git pull --tags
+    - name: Check `git describe --tags`
+      run: git describe --tags
     - name: Build Binary
       run: cargo make zip-release-ci-flow --env CARGO_MAKE_RELEASE_FLOW_TARGET=${{ matrix.binary_target }}
     - name: Upload Binaries
