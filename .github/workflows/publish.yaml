@@ -34,7 +34,6 @@ jobs:
       with:
         toolchain: stable-${{ matrix.binary_target }}
         profile: minimal
-        override: true
     - name: Build Binary
       uses: actions-rs/cargo@v1
       with:
