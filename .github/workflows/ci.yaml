@@ -13,6 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
+        name: Install Rust
         with:
           profile: minimal
           toolchain: stable
@@ -34,12 +35,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
+        name: Install Rust
         with:
           profile: minimal
           toolchain: stable
           override: true
       - uses: actions-rs/cargo@v1
-        name: build
+        name: Run tests
         with:
           command: test
           args: --all-features --all-targets
@@ -54,19 +56,19 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
+      - uses: actions-rs/toolchain@v1
+        name: Install Rust
         with:
           profile: minimal
           toolchain: stable
           override: true
-      - name: Install cargo-make
-        uses: actions-rs/cargo@v1
+      - uses: actions-rs/cargo@v1
+        name: Install cargo-make
         with:
           command: install
           args: --debug cargo-make
-      - name: Run CI
-        uses: actions-rs/cargo@v1
+      - uses: actions-rs/cargo@v1
+        name: Run CI
         with:
           command: run
           args: --bin cargo-make target/ci -- make ci-flow
