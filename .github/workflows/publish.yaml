@@ -36,10 +36,10 @@ jobs:
       run: |
         echo "::set-output name=result::$(git describe --tags)"
     - name: Build Binary
-      run: >
+      run: "
         cargo make zip-release-ci-flow
           --env CARGO_MAKE_RELEASE_FLOW_TARGET=${{ matrix.binary_target }}
-          --env CARGO_MAKE_PROJECT_VERSION=${{ steps.git_describe.outputs.result }}
+          --env CARGO_MAKE_PROJECT_VERSION=${{ steps.git_describe.outputs.result }}"
     - name: Upload Binaries
       uses: svenstaro/upload-release-action@v1-release
       with:
