@@ -30,7 +30,7 @@ jobs:
         profile: minimal
     - uses: davidB/rust-cargo-make@v1
     - name: Pull tags
-      run: git pull --tags
+      run: git fetch --tags --prune --unshallow
     - name: Check `git describe --tags`
       run: git describe --tags
     - name: Build Binary
