@@ -437,7 +437,7 @@ dependencies = [
  "http",
  "indexmap",
  "slab",
- "tokio 1.2.0",
+ "tokio 1.3.0",
  "tokio-util 0.6.3",
  "tracing",
  "tracing-futures",
@@ -574,7 +574,7 @@ dependencies = [
  "itoa",
  "pin-project 1.0.5",
  "socket2",
- "tokio 1.2.0",
+ "tokio 1.3.0",
  "tower-service",
  "tracing",
  "want",
@@ -602,7 +602,7 @@ dependencies = [
  "bytes 1.0.1",
  "hyper 0.14.4",
  "native-tls",
- "tokio 1.2.0",
+ "tokio 1.3.0",
  "tokio-native-tls",
 ]
 
@@ -1222,7 +1222,7 @@ dependencies = [
  "pin-project-lite 0.2.4",
  "serde",
  "serde_urlencoded",
- "tokio 1.2.0",
+ "tokio 1.3.0",
  "tokio-native-tls",
  "url",
  "wasm-bindgen",
@@ -1244,7 +1244,7 @@ dependencies = [
  "once_cell",
  "reqwest 0.10.10",
  "serde",
- "tokio 1.2.0",
+ "tokio 1.3.0",
  "vergen",
  "warp",
  "warp-reverse-proxy",
@@ -1535,9 +1535,9 @@ dependencies = [
 
 [[package]]
 name = "tokio"
-version = "1.2.0"
+version = "1.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e8190d04c665ea9e6b6a0dc45523ade572c088d2e6566244c1122671dbf4ae3a"
+checksum = "8d56477f6ed99e10225f38f9f75f872f29b8b8bd8c0b946f63345bb144e9eeda"
 dependencies = [
  "autocfg",
  "bytes 1.0.1",
@@ -1567,7 +1567,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f7d995660bd2b7f8c1568414c1126076c13fbb725c40112dc0120b78eb9b717b"
 dependencies = [
  "native-tls",
- "tokio 1.2.0",
+ "tokio 1.3.0",
 ]
 
 [[package]]
@@ -1578,7 +1578,7 @@ checksum = "1981ad97df782ab506a1f43bf82c967326960d278acf3bf8279809648c3ff3ea"
 dependencies = [
  "futures-core",
  "pin-project-lite 0.2.4",
- "tokio 1.2.0",
+ "tokio 1.3.0",
 ]
 
 [[package]]
@@ -1600,7 +1600,7 @@ dependencies = [
  "futures-util",
  "log",
  "pin-project 1.0.5",
- "tokio 1.2.0",
+ "tokio 1.3.0",
  "tungstenite",
 ]
 
@@ -1629,7 +1629,7 @@ dependencies = [
  "futures-sink",
  "log",
  "pin-project-lite 0.2.4",
- "tokio 1.2.0",
+ "tokio 1.3.0",
 ]
 
 [[package]]
@@ -1838,7 +1838,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_urlencoded",
- "tokio 1.2.0",
+ "tokio 1.3.0",
  "tokio-stream",
  "tokio-tungstenite",
  "tokio-util 0.6.3",
