@@ -1,0 +1,37 @@
+version: 2
+updates:
+- package-ecosystem: cargo
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "13:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: reqwest
+    versions:
+    - ">= 0.11.a, < 0.12"
+  - dependency-name: tokio
+    versions:
+    - ">= 0.3.a, < 0.4"
+  - dependency-name: tokio
+    versions:
+    - ">= 1.0.a, < 1.1"
+  - dependency-name: vergen
+    versions:
+    - "> 3.2.0"
+  - dependency-name: vergen
+    versions:
+    - ">= 4.a, < 5"
+  - dependency-name: vergen
+    versions:
+    - ">= 5.a, < 6"
+  - dependency-name: warp
+    versions:
+    - 0.3.0
+  - dependency-name: warp-reverse-proxy
+    versions:
+    - 0.3.0
+  - dependency-name: tokio
+    versions:
+    - 1.1.0
+    - 1.1.1
