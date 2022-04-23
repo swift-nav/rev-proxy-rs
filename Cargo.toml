@@ -1,6 +1,6 @@
 [package]
 name = "rev-proxy"
-version = "1.2.7"
+version = "1.2.8-alpha.1"
 authors = ["Swift Navigation <dev@swiftnav.com>"]
 edition = "2018"
 publish = false
