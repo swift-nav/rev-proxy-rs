@@ -4,7 +4,7 @@ use std::error::Error;
 use std::net::SocketAddr;
 use std::sync::Mutex;
 
-use clap::App;
+use clap::Command;
 use indoc::indoc;
 use once_cell::sync::OnceCell;
 use serde::Deserialize;
@@ -68,27 +68,27 @@ async fn main() -> Result<()> {
         env!("VERGEN_SHA_SHORT")
     );
 
-    let matches = App::new("rev-proxy")
+    let matches = Command::new("rev-proxy")
         .version(&*version)
         .author("Swift Navigation <dev@swift-nav.com>")
         .about("Reverse proxy middleware to handle clean shutdowns")
         .after_help(indoc! {"
             Requires the following environment variables for configuration:
-
+    
             REV_PROXY_LISTEN_ADDRESS - the listen address for the service,
                                        e.g. `127.0.0.1:8008`
-
+    
             REV_PROXY_BASE_PATH      - the base path to be included in
                                        requests to the upstream proxy,
                                        e.g. `/upstream/path`
-
+    
             REV_PROXY_UPSTREAM_URL   - the URL of the upstream server,
                                        e.g. `http://127.0.0.1:8080/`
-
+    
             REV_PROXY_SHUTDOWN_KEY   - a key that must be presented to the
                                        upstream server to initiate
                                        a shutdown, e.g. `2a2a3a6dafe30...`
-
+    
             REV_PROXY_SHUTDOWN_URL   - the URL to invoke when a shutdown is
                                        triggered, the value from
                                        `REV_PROXY_SHUTDOWN_KEY` is appended
