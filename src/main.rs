@@ -4,7 +4,7 @@ use std::error::Error;
 use std::net::SocketAddr;
 use std::sync::Mutex;
 
-use clap::App;
+use clap::Parser;
 use indoc::indoc;
 use once_cell::sync::OnceCell;
 use serde::Deserialize;
@@ -29,6 +29,30 @@ type MaybeSenderT = Option<SenderT>;
 type SharedSenderT = Mutex<Cell<MaybeSenderT>>;
 
 static SHUTDOWN_TX: OnceCell<SharedSenderT> = OnceCell::new();
+
+const AFTER_HELP: &str = indoc! {"
+                Requires the following environment variables for configuration:
+    
+                REV_PROXY_LISTEN_ADDRESS - the listen address for the service,
+                                           e.g. `127.0.0.1:8008`
+    
+                REV_PROXY_BASE_PATH      - the base path to be included in
+                                           requests to the upstream proxy,
+                                           e.g. `/upstream/path`
+    
+                REV_PROXY_UPSTREAM_URL   - the URL of the upstream server,
+                                           e.g. `http://127.0.0.1:8080/`
+    
+                REV_PROXY_SHUTDOWN_KEY   - a key that must be presented to the
+                                           upstream server to initiate
+                                           a shutdown, e.g. `2a2a3a6dafe30...`
+    
+                REV_PROXY_SHUTDOWN_URL   - the URL to invoke when a shutdown is
+                                           triggered, the value from
+                                           `REV_PROXY_SHUTDOWN_KEY` is appended
+                                           to this URL, e.g.
+                                           `http://127.0.0.1:8080/shutdown?key=`
+"};
 
 fn setup_termination_handler() {
     ctrlc::set_handler(move || {
@@ -55,6 +79,15 @@ fn setup_termination_handler() {
     .expect("error setting SIGINT/SIGTERM handler");
 }
 
+#[derive(Parser)]
+#[clap(
+    after_help = AFTER_HELP,
+    version = concat!(env!("VERGEN_SEMVER_LIGHTWEIGHT"), " (", env!("VERGEN_SHA_SHORT"), ")"),
+    author,
+    about
+)]
+struct Cli {}
+
 async fn log_response(response: warp::http::Response<Bytes>) -> StdResult<impl Reply, Rejection> {
     log::debug!("{:?}", response);
     Ok(response)
@@ -62,45 +95,10 @@ async fn log_response(response: warp::http::Response<Bytes>) -> StdResult<impl R
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let version = format!(
-        "{} ({})",
-        env!("VERGEN_SEMVER_LIGHTWEIGHT"),
-        env!("VERGEN_SHA_SHORT")
-    );
-
-    let matches = App::new("rev-proxy")
-        .version(&*version)
-        .author("Swift Navigation <dev@swift-nav.com>")
-        .about("Reverse proxy middleware to handle clean shutdowns")
-        .after_help(indoc! {"
-            Requires the following environment variables for configuration:
-
-            REV_PROXY_LISTEN_ADDRESS - the listen address for the service,
-                                       e.g. `127.0.0.1:8008`
-
-            REV_PROXY_BASE_PATH      - the base path to be included in
-                                       requests to the upstream proxy,
-                                       e.g. `/upstream/path`
-
-            REV_PROXY_UPSTREAM_URL   - the URL of the upstream server,
-                                       e.g. `http://127.0.0.1:8080/`
-
-            REV_PROXY_SHUTDOWN_KEY   - a key that must be presented to the
-                                       upstream server to initiate
-                                       a shutdown, e.g. `2a2a3a6dafe30...`
-
-            REV_PROXY_SHUTDOWN_URL   - the URL to invoke when a shutdown is
-                                       triggered, the value from
-                                       `REV_PROXY_SHUTDOWN_KEY` is appended
-                                       to this URL, e.g.
-                                       `http://127.0.0.1:8080/shutdown?key=`
-            "})
-        .get_matches();
+    let _cli = Cli::parse();
 
     env_logger::init();
     let config = envy::from_env::<Config>()?;
-
-    log::debug!("{:#?}", matches);
 
     let (tx, rx) = oneshot::channel();
 
