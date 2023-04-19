@@ -13,7 +13,7 @@ envy = "0.4"
 serde = { version = "1.0", features = ["derive"] }
 tokio = { version = "1.5", features = ["sync", "macros", "rt-multi-thread"] }
 log = "0.4.17"
-env_logger = "0.9.3"
+env_logger = "0.10.0"
 reqwest = "0.11.10"
 clap = { version = "4.1.8", features = ["derive"] }
 indoc = "1"
