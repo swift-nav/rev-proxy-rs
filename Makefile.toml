@@ -1,3 +1,24 @@
+[env.release]
+BUILD_FLAVOR = "--release"
+RUSTFLAGS="-C opt-level=3"
+VERBOSE = "-vv"
+
+[env.'release+static+x86_64']
+BUILD_FLAVOR = "--release"
+TARGET = "--target=x86_64-unknown-linux-musl"
+RUSTFLAGS="-C opt-level=3"
+VERBOSE = "-vv"
+
+[env.'release+static+aarch64']
+CC_aarch64_unknown_linux_musl="clang"
+AR_aarch64_unknown_linux_musl="llvm-ar"
+CFLAGS_aarch64_unknown_linux_musl="-I/usr/aarch64-linux-gnu/include"
+CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUNNER="qemu-aarch64 -L /usr/aarch64-linux-gnu"
+CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUSTFLAGS="-C link-self-contained=yes -C linker=rust-lld -C codegen-units=1 -C panic=abort -C opt-level=3"
+BUILD_FLAVOR = "--release"
+TARGET = "--target=aarch64-unknown-linux-musl"
+VERBOSE = "-vv"
+
 [tasks.zip-release-binary-for-target]
 description = "Zips up the release binary, README, and license(s)"
 category = "Publish"
@@ -15,3 +36,12 @@ cp target/$CARGO_MAKE_RELEASE_FLOW_TARGET/release/${CARGO_MAKE_BINARY_EXECUTABLE
 cp README.md LICENSE* ${OUTPUT_NAME}/
 zip -r ${OUTPUT_NAME}.zip ${OUTPUT_NAME}
 '''
+
+[tasks.build]
+command = "cargo"
+args = [
+        "build",
+        "@@remove-empty(VERBOSE)",
+        "@@remove-empty(BUILD_FLAVOR)",
+        "@@remove-empty(TARGET)"
+        ]
