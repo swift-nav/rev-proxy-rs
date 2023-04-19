@@ -29,12 +29,16 @@ jobs:
             profile: release
 
     steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
     - name: Install musl tools
       if: matrix.os == 'ubuntu-latest'
       run: sudo apt-get install musl-tools
 
-    - name: Checkout
-      uses: actions/checkout@v2
+    - name: Install musl (aarch64) tools
+      if: matrix.binary_target == 'aarch64-unknown-linux-musl'
+      run: sudo ./scripts/install-musl-aarch64-openssl.bash
 
     - name: Install rust for target ${{ matrix.binary_target }}
       uses: actions-rs/toolchain@v1
@@ -57,6 +61,7 @@ jobs:
 
     - name: Build Binary
       run: >
+        source scripts/musl-aarch64-env.bash;
         cargo make -p ${{ matrix.profile }}
         --env CARGO_MAKE_RELEASE_FLOW_TARGET=${{ matrix.binary_target }}
         --env CARGO_MAKE_PROJECT_VERSION=${{ steps.git_desc.outputs.result }}
