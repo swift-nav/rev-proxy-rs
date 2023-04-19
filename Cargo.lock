@@ -1107,6 +1107,7 @@ dependencies = [
  "serde_urlencoded",
  "tokio",
  "tokio-native-tls",
+ "tokio-util 0.6.3",
  "url",
  "wasm-bindgen",
  "wasm-bindgen-futures",
@@ -1694,9 +1695,9 @@ dependencies = [
 
 [[package]]
 name = "warp-reverse-proxy"
-version = "0.5.0"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "21bb86f4c86d0fb386acf34fa5360ea0e8a082835e05296da2286c38a3316283"
+checksum = "948552bbb7a5fb4ba3169fd09b6c1ab53c1b2fdd82603295df550f7a1ec644c0"
 dependencies = [
  "hyper",
  "once_cell",

@@ -8,7 +8,7 @@ publish = false
 
 [dependencies]
 warp = "0.3"
-warp-reverse-proxy = "0.5"
+warp-reverse-proxy = "1.0"
 envy = "0.4"
 serde = { version = "1.0", features = ["derive"] }
 tokio = { version = "1.5", features = ["sync", "macros", "rt-multi-thread"] }
