@@ -20,7 +20,7 @@ indoc = "2"
 once_cell = "1.17"
 
 [dependencies.ctrlc]
-version = "3.2"
+version = "3.4"
 features = ["termination", ]
 
 [build-dependencies]
