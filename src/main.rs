@@ -139,7 +139,7 @@ async fn main() -> Result<()> {
     } else {
         log::info!("issuing upstream shutdown request: {}", shutdown_url);
         let shutdown_thd = std::thread::spawn(move || {
-            let shutdown_resp = reqwest::blocking::get(&shutdown_url);
+            let shutdown_resp = reqwest::blocking::get(shutdown_url);
             match shutdown_resp {
                 Ok(shutdown_resp) => {
                     let shutdown_text = shutdown_resp.text();
