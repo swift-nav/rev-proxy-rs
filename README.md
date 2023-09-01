@@ -5,16 +5,11 @@
 ## Usage
 
 ```
-rev-proxy 1.1.0 (83e860c)
-Swift Navigation <dev@swift-nav.com>
-Reverse proxy middleware to handle clean shutdowns
+Usage: rev-proxy
 
-USAGE:
-    rev-proxy
-
-FLAGS:
-    -h, --help       Prints help information
-    -V, --version    Prints version information
+Options:
+  -h, --help     Print help
+  -V, --version  Print version
 
 Requires the following environment variables for configuration:
 
