@@ -1,8 +1,8 @@
+use std::boxed::Box;
 use std::cell::Cell;
 use std::error::Error;
 use std::net::SocketAddr;
 use std::sync::Mutex;
-use std::{boxed::Box, net::Shutdown};
 
 use clap::Parser;
 use indoc::indoc;
