@@ -138,7 +138,7 @@ async fn main() -> Result<()> {
         log::info!("not issuing upstream shutdown request");
     } else {
         log::info!("issuing upstream shutdown request: {}", shutdown_url);
-        let shutdown_resp = reqwest::get(&shutdown_url).await?.text().await?;
+        let shutdown_resp = reqwest::blocking::get(&shutdown_url)?.text()?;
         log::info!("upstream shutdown response: {}", shutdown_resp);
     }
 
