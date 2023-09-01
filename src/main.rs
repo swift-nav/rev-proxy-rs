@@ -1,4 +1,4 @@
-use std::boxed::Box;
+use std::{boxed::Box, net::Shutdown};
 use std::cell::Cell;
 use std::error::Error;
 use std::net::SocketAddr;
@@ -138,8 +138,26 @@ async fn main() -> Result<()> {
         log::info!("not issuing upstream shutdown request");
     } else {
         log::info!("issuing upstream shutdown request: {}", shutdown_url);
-        let shutdown_resp = reqwest::blocking::get(&shutdown_url)?.text()?;
-        log::info!("upstream shutdown response: {}", shutdown_resp);
+        let shutdown_thd = std::thread::spawn(move || {
+            let shutdown_resp = reqwest::blocking::get(&shutdown_url);
+            match shutdown_resp {
+                Ok(shutdown_resp) => {
+                    let shutdown_text = shutdown_resp.text();
+                    match shutdown_text {
+                        Ok(shutdown_text) => {
+                            log::info!("upstream shutdown response: {}", shutdown_text);
+                        }
+                        Err(err) => {
+                            log::error!("shutdown request (text) failed: {}", err);
+                        }
+                    }
+                }
+                Err(err) => {
+                    log::error!("shutdown request failed: {}", err);
+                }
+            }
+        });
+        shutdown_thd.join().unwrap();
     }
 
     Ok(())
