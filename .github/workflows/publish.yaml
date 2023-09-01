@@ -34,7 +34,7 @@ jobs:
 
     - name: Install musl tools
       if: matrix.os == 'ubuntu-latest'
-      run: sudo apt-get install musl-tools
+      run: sudo apt-get update && sudo apt-get install musl-tools
 
     - name: Install musl (aarch64) tools
       if: matrix.binary_target == 'aarch64-unknown-linux-musl'
